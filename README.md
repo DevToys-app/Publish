@@ -6,7 +6,7 @@
 
 # How to create artifacts
 
-[![publish](https://github.com/DevToys-app/Publish-CI/actions/workflows/ci.yml/badge.svg)](https://github.com/DevToys-app/Publish-CI/actions/workflows/ci.yml)
+[![publish](https://github.com/DevToys-app/Publish/actions/workflows/ci.yml/badge.svg)](https://github.com/DevToys-app/Publish/actions/workflows/ci.yml)
 
 Set of pipeline and logic to apply when publishing
 
