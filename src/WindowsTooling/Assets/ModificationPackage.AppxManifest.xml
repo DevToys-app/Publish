@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Package 
+    xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" 
+    xmlns:build="http://schemas.microsoft.com/developer/appx/2015/build" 
+    xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" 
+    xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4" 
+    xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" 
+    xmlns:rescap6="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities/6" 
+    xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+    IgnorableNamespaces="build uap uap4 rescap rescap6 desktop4" >
+    <Dependencies>
+        <TargetDeviceFamily MaxVersionTested="10.0.17763.0" MinVersion="10.0.17763.0" Name="Windows.Desktop" />
+    </Dependencies>
+    <Properties>
+        <DisplayName></DisplayName>
+        <PublisherDisplayName></PublisherDisplayName>
+        <Description></Description>
+        <Logo></Logo>
+    </Properties>
+    <Resources>
+        <Resource Language="EN-US" />
+    </Resources>  
+</Package>

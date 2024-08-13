@@ -1,0 +1,44 @@
+#!/usr/bin/make -f
+
+# Sometimes devs have these symlinked/aliased to somethin else
+# so we need to make sure we're using the right ones
+CP:=/bin/cp # copy command
+RM:=/bin/rm # remove command
+MV:=/bin/mv # move command
+MKDIR:=/bin/mkdir # make directory command
+
+# Set some variables for our package
+SRC_DIR:=../../../../publish/arm/DevToys.CLI-linux-arm-portable/
+# Dir structure of package content: debian/${SRC_PKG_NAME}/opt/${SRC_PKG_ORG}/${SRC_PKG_NAME}
+# SRC_PKG_NAME: deb package name, same as in control and changelog files
+# SRC_PKG_ORG : is like an umbrella dir (company or org) for all different packages to put in
+DEST_DIR:=debian/devtoys.cli/opt/devtoys/devtoys.cli
+# Deb build package files at     : ./debian/devtoys.cli/opt/devtoys/devtoys.cli
+# Deb installed package files at :                     /opt/devtoys/devtoys.cli
+
+# TODO: For complete quick-info in rule system Visit : https://github.com/FooBarWidget/debian-packaging-for-the-modern-developer/blob/master/tutorial-5/README.md
+# TODO: For in-depth reference documentation Visit : https://www.debian.org/doc/manuals/maint-guide/ 
+
+# We're building outside of dpkg. So we don't need to do anything here
+build:
+	@# Do nothing
+
+# No build, hence no clean
+clean:
+	@# Do nothing
+	dh_prep
+
+binary:
+	@# Some cleanups
+	dh_prep
+	$(MKDIR) -p ${DEST_DIR}
+	$(CP) -r ${SRC_DIR}/* ${DEST_DIR}/
+	@# dh_link -p${SRC_PKG_NAME} /opt/${SRC_PKG_ORG}/${SRC_PKG_NAME}/bin/devtoys /usr/bin/devtoys
+	@# Instead use the devtoys.cli.links to generate symlinks
+	dh_link
+	dh_compress
+	dh_fixperms
+	@# TODO: dh_installdeb --> Not doing this since we don't have a fixed GPG keys yet
+	dh_gencontrol -- -Tdebian/substvars # Substitue variables
+	dh_md5sums
+	dh_builddeb

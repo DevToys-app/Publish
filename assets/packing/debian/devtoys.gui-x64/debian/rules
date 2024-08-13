@@ -1,0 +1,53 @@
+#!/usr/bin/make -f
+
+# Sometimes devs have these symlinked/aliased to somethin else
+# so we need to make sure we're using the right ones
+CP:=/bin/cp # copy command
+RM:=/bin/rm # remove command
+MV:=/bin/mv # move command
+MKDIR:=/bin/mkdir # make directory command
+
+# Set some variables for our package
+SRC_DIR:=../../../../publish/x64/DevToys.Linux-linux-x64/
+DESKTOP_FILE_SRC_PATH:=./desktop-file/devtoys.desktop
+ICON_FILE_SRC_PATH:=../../../../submodules/DevToys/assets/logo/Windows-Linux/Preview/Icon-Windows-Linux-Preview.png
+# Dir structure of package content: debian/${SRC_PKG_NAME}/opt/${SRC_PKG_ORG}/${SRC_PKG_NAME}
+# SRC_PKG_NAME: deb package name, same as in control and changelog files
+# SRC_PKG_ORG : is like an umbrella dir (company or org) for all different packages to put in
+PACKAGE_DEST_DIR:=debian/devtoys/opt/devtoys/devtoys
+DESKTOP_FILE_DEST_DIR:=debian/devtoys/usr/share/applications/
+# Deb build package files at     : ./debian/devtoys/opt/devtoys/devtoys
+# Deb installed package files at :                     /opt/devtoys/devtoys
+
+# TODO: For complete quick-info in rule system Visit : https://github.com/FooBarWidget/debian-packaging-for-the-modern-developer/blob/master/tutorial-5/README.md
+# TODO: For in-depth reference documentation Visit : https://www.debian.org/doc/manuals/maint-guide/ 
+# TODO: For debhelper (dh_*) functios visit        : https://manpages.debian.org/testing/debhelper/index.html
+
+# We're building outside of dpkg. So we don't need to do anything here
+build:
+	@# Do nothing
+
+# No build, hence no clean
+clean:
+	@# Do nothing
+	dh_prep
+
+binary:
+	@# Some cleanups
+	dh_prep
+	$(MKDIR) -p ${PACKAGE_DEST_DIR}
+	$(MKDIR) -p ${DESKTOP_FILE_DEST_DIR}
+	$(CP) -r ${SRC_DIR}/* ${PACKAGE_DEST_DIR}/
+	$(CP) ${ICON_FILE_SRC_PATH} ${PACKAGE_DEST_DIR}/ # Copy the icon to the package dir
+	$(CP) ${DESKTOP_FILE_SRC_PATH} ${DESKTOP_FILE_DEST_DIR} # Copy the desktop file to the applications dir
+
+	@# dh_link -p${SRC_PKG_NAME} /opt/${SRC_PKG_ORG}/${SRC_PKG_NAME}/bin/devtoys /usr/bin/devtoys
+	@# Instead use the devtoys.links to generate symlinks
+	# dpkg-parsechangelog > debian/changelog
+	dh_link
+	dh_compress
+	dh_fixperms
+	@# TODO: dh_installdeb --> Not doing this since we don't have a fixed GPG keys yet
+	dh_gencontrol -- -Tdebian/substvars # Substitue variables
+	dh_md5sums
+	dh_builddeb

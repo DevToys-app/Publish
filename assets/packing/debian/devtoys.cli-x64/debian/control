@@ -1,0 +1,12 @@
+Source: devtoys.cli
+Section: devel
+Priority: optional
+Maintainer: Etienne Baudoux <no-reply@velersoftware.com>
+Build-Depends: debhelper (>= 10)
+
+Package: devtoys.cli
+Architecture: amd64
+Depends: ${misc:Depends}
+# TODO: not adding this since devtoys.cli is portable
+# Depends: dotnet-8.0
+Description: A Swiss Army knife for developers.

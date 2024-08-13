@@ -4,3 +4,6 @@
 [submodule "submodules/DevToys.Tools"]
 	path = submodules/DevToys.Tools
 	url = https://github.com/DevToys-app/DevToys.Tools.git
+[submodule "submodules/Publish-Private"]
+	path = submodules/Publish-Private
+	url = https://github.com/DevToys-app/Publish-Private.git

@@ -1,0 +1,101 @@
+name: publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      MajorVersion:
+        description: 'Major version number'
+        required: true
+        default: '2'
+      MinorVersion:
+        description: 'Minor version number'
+        required: true
+        default: '0'
+      BuildOrPreviewNumber:
+        description: 'Build / Preview number'
+        required: true
+        default: '0'
+      IsPreviewVersion:
+        description: 'Is it a preview build? true/false'
+        required: true
+        default: 'true'
+      AppleId:
+        description: 'Apple ID'
+        required: false
+        default: ''
+      AppleAppPassword:
+        description: 'Apple ID App Password'
+        required: false
+        default: ''
+      AppleTeamId:
+        description: 'Apple Developer Team ID'
+        required: false
+        default: ''
+
+jobs:
+  build-windows:
+    name: build, test and pack for Windows
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v3
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
+      - name: 'Restore, Build, Test and Packing'
+        run: ./build.cmd Pack -MajorVersion ${{ github.event.inputs.MajorVersion }} -MinorVersion ${{ github.event.inputs.MinorVersion }} -BuildOrPreviewNumber ${{ github.event.inputs.BuildOrPreviewNumber }} -IsPreviewVersion ${{ github.event.inputs.IsPreviewVersion }}
+      - name: 'Upload artifacts'
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-artifact
+          path: artifacts/
+
+  build-debian:
+    name: build, test and pack for Debian
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v3
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
+      - name: 'Restore, Build, Test and Packing'
+        run: ./build.cmd Pack -MajorVersion ${{ github.event.inputs.MajorVersion }} -MinorVersion ${{ github.event.inputs.MinorVersion }} -BuildOrPreviewNumber ${{ github.event.inputs.BuildOrPreviewNumber }} -IsPreviewVersion ${{ github.event.inputs.IsPreviewVersion }}
+      - name: 'Upload artifacts'
+        uses: actions/upload-artifact@v2
+        with:
+          name: debian-artifact
+          path: artifacts/
+
+  build-macos:
+    name: build, test and pack for macOS
+    runs-on: macos-14
+    timeout-minutes: 30
+    steps:
+      - name: Set to use Xcode 15.1
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.1'
+      - uses: actions/checkout@v3
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v3
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
+      - name: 'Restore, Build, Test and Packing'
+        run: ./build.cmd Pack -MajorVersion ${{ github.event.inputs.MajorVersion }} -MinorVersion ${{ github.event.inputs.MinorVersion }} -BuildOrPreviewNumber ${{ github.event.inputs.BuildOrPreviewNumber }} -IsPreviewVersion ${{ github.event.inputs.IsPreviewVersion }}
+      - name: 'Upload artifacts'
+        uses: actions/upload-artifact@v2
+        with:
+          name: macos-artifact
+          path: artifacts/

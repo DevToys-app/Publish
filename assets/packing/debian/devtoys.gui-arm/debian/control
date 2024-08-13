@@ -1,0 +1,13 @@
+Source: devtoys
+Section: devel
+Priority: optional
+Maintainer: Etienne Baudoux <no-reply@velersoftware.com>
+Build-Depends: debhelper (>= 10)
+
+Package: devtoys
+Architecture: arm64
+Depends: ${misc:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+# TODO: not adding this since devtoys is portable 
+# Depends: dotnet-8.0
+Description: A Swiss Army knife for developers.

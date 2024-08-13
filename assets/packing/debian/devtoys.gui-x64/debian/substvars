@@ -1,0 +1,2 @@
+misc:Depends=libwebkitgtk-6.0-4, libadwaita-1-0
+misc:Pre-Depends=libwebkitgtk-6.0-4, libadwaita-1-0
