@@ -1,0 +1,6 @@
+[submodule "submodules/DevToys"]
+	path = submodules/DevToys
+	url = https://github.com/DevToys-app/DevToys.git
+[submodule "submodules/DevToys.Tools"]
+	path = submodules/DevToys.Tools
+	url = https://github.com/DevToys-app/DevToys.Tools.git
